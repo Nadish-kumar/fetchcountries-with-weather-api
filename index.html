@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body>
+  
+    <script>
+        var board = document.createElement("div");
+        board.style.width = "1500px";
+        board.style.height = "100px";
+        board.style.display = "flex";
+        board.style.flexDirection = "row";
+        board.style.flexWrap = "wrap";
+        //board.style.backgroundColor="pink"
+
+        fetch("https://restcountries.com/v3.1/all")
+            .then(function (data) {
+                return data.json();
+            })
+            .then(function (dataobj) {
+                console.log(dataobj)
+
+                   dataobj.forEach( function (element)  {
+                    var box = document.createElement("div")
+                    box.style.width = "250px";
+                    box.style.height = "100px";
+                    box.style.backgroundColor = "#7fff00";
+                    box.style.margin = "10px";
+                    box.style.border = "1px solid black"
+
+                    var img = document.createElement("img")
+                    img.style.width="50px"
+                    img.style.margin="1% solid black"
+                    img.setAttribute("src",element.flags.png)
+                   // img.margin-right = "auto";
+                   // img.margin-left = "auto"
+                    box.appendChild(img);
+                    
+                    var name = document.createElement("div")
+                    name.innerText=element.name.common;
+                    //name.style.height="50%"
+                    box.appendChild(name);
+
+                    var twochar = document.createElement("div")
+                    twochar.innerText=element.car.signs;
+                    //twochar.style.height="40%"
+                    box.appendChild(twochar);
+
+                    var button = document.createElement("button")
+                    button.innerText= "Get Weather";
+                    button.style.class="btn btn-primary";
+                    //button.style.width="40px";
+                    //button.style.height="10px"
+                    box.appendChild(button);
+                     
+                
+              
+                 button.addEventListener("click",function(){
+                        
+                    fetch("https://api.openweathermap.org/data/2.5/weather?q="+element.name.common+"&appid=9ca2e8d504c4793f7a0ac5aa18d7bec5")
+                  .then(function(datason){
+                        return datason.json();
+                  })
+                  .then(function(objdata){
+                      alert("Country Name: " + objdata.name + "\n" +"Temperature: " + objdata.main.temp + "\n" +"Wind Speed: " + objdata.wind.speed)
+                  })
+                 
+                 })
+
+                 
+                 
+                 
+             
+
+
+                   board.appendChild(box);
+                
+
+                   });
+                
+            })
+        document.body.appendChild(board)
+    </script>
+</body>
+</html>
